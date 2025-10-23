@@ -204,22 +204,28 @@ function animateCounters() {
     const counters = document.querySelectorAll('.stat h3');
     
     counters.forEach(counter => {
-        const target = parseInt(counter.textContent.replace(/\D/g, ''));
-        const suffix = counter.textContent.replace(/\d/g, '');
-        let current = 0;
-        const increment = target / 50;
+        const text = counter.textContent;
+        const target = parseInt(text.replace(/\D/g, ''));
         
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                counter.textContent = Math.ceil(current) + suffix;
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target + suffix;
-            }
-        };
-        
-        updateCounter();
+        // Only animate if there's a valid number to animate
+        if (!isNaN(target) && target > 0) {
+            const suffix = text.replace(/\d/g, '');
+            let current = 0;
+            const increment = target / 50;
+            
+            const updateCounter = () => {
+                if (current < target) {
+                    current += increment;
+                    counter.textContent = Math.ceil(current) + suffix;
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target + suffix;
+                }
+            };
+            
+            updateCounter();
+        }
+        // For non-numeric stats (like "M.S.", "B.S."), just display them as-is
     });
 }
 
