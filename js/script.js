@@ -87,18 +87,35 @@ if (contactForm) {
             return;
         }
         
-        // Simulate form submission
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
+        // Open email client with pre-filled data
+        const emailSubject = encodeURIComponent(subject);
+        const emailBody = encodeURIComponent(
+            `Hello,\n\n${message}\n\nBest regards,\n${name}\nEmail: ${email}`
+        );
         
+        // Get the obfuscated email address
+        const emailData = {
+            part1: String.fromCharCode(116, 101, 97, 99, 104, 101, 114), // "teacher"
+            part2: String.fromCharCode(64), // "@"
+            part3: String.fromCharCode(103, 101, 110, 101, 114, 97, 116, 105, 118, 101, 97, 114, 116), // "generativeart"
+            part4: String.fromCharCode(46), // "."
+            part5: String.fromCharCode(115, 116, 117, 100, 105, 111) // "studio"
+        };
+        const recipientEmail = emailData.part1 + emailData.part2 + emailData.part3 + emailData.part4 + emailData.part5;
+        
+        // Create mailto link
+        const mailtoLink = `mailto:${recipientEmail}?subject=${emailSubject}&body=${emailBody}`;
+        
+        // Open email client
+        window.open(mailtoLink, '_blank');
+        
+        // Show success notification
+        showNotification('Opening your email client...', 'success');
+        
+        // Reset form after a short delay
         setTimeout(() => {
-            showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
             this.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
+        }, 1000);
     });
 }
 
