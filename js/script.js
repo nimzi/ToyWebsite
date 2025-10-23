@@ -292,3 +292,84 @@ revealElements.forEach(el => {
     el.style.transition = 'all 0.8s ease';
     revealObserver.observe(el);
 });
+
+// Email obfuscation system
+function obfuscateEmail() {
+    // Email parts - split to make it harder for bots to harvest
+    // Using character codes and string manipulation for additional obfuscation
+    const emailData = {
+        part1: String.fromCharCode(116, 101, 97, 99, 104, 101, 114), // "teacher"
+        part2: String.fromCharCode(64), // "@"
+        part3: String.fromCharCode(103, 101, 110, 101, 114, 97, 116, 105, 118, 101, 97, 114, 116), // "generativeart"
+        part4: String.fromCharCode(46), // "."
+        part5: String.fromCharCode(115, 116, 117, 100, 105, 111) // "studio"
+    };
+    
+    // Create the full email address
+    const fullEmail = emailData.part1 + emailData.part2 + emailData.part3 + emailData.part4 + emailData.part5;
+    
+    // Find all elements with obfuscated email class
+    const emailElements = document.querySelectorAll('.obfuscated-email');
+    
+    emailElements.forEach(element => {
+        // Create clickable mailto link
+        const link = document.createElement('a');
+        link.href = `mailto:${fullEmail}`;
+        link.textContent = fullEmail;
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.addEventListener('mouseenter', function() {
+            this.style.textDecoration = 'underline';
+        });
+        link.addEventListener('mouseleave', function() {
+            this.style.textDecoration = 'none';
+        });
+        
+        // Replace the placeholder content
+        element.innerHTML = '';
+        element.appendChild(link);
+    });
+}
+
+// Telegram obfuscation system
+function obfuscateTelegram() {
+    // Telegram handle parts - split to make it harder for bots to harvest
+    // Using character codes and string manipulation for additional obfuscation
+    const telegramData = {
+        part1: String.fromCharCode(64), // "@"
+        part2: String.fromCharCode(98, 101, 110, 111, 110, 105, 115, 121, 115, 116, 101, 109) // "benonisystem"
+    };
+    
+    // Create the full telegram handle
+    const fullTelegram = telegramData.part1 + telegramData.part2;
+    
+    // Find all elements with obfuscated telegram class
+    const telegramElements = document.querySelectorAll('.obfuscated-telegram');
+    
+    telegramElements.forEach(element => {
+        // Create clickable telegram link
+        const link = document.createElement('a');
+        link.href = `https://t.me/benonisystem`;
+        link.textContent = fullTelegram;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.style.color = 'inherit';
+        link.style.textDecoration = 'none';
+        link.addEventListener('mouseenter', function() {
+            this.style.textDecoration = 'underline';
+        });
+        link.addEventListener('mouseleave', function() {
+            this.style.textDecoration = 'none';
+        });
+        
+        // Replace the placeholder content
+        element.innerHTML = '';
+        element.appendChild(link);
+    });
+}
+
+// Initialize both email and telegram obfuscation when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    obfuscateEmail();
+    obfuscateTelegram();
+});
